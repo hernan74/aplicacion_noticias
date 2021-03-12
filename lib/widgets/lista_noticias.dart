@@ -1,5 +1,6 @@
-import 'package:aplicacion_noticias/model/noticias_models.dart';
 import 'package:flutter/material.dart';
+
+import 'package:aplicacion_noticias/model/noticias_models.dart';
 
 class ListaNoticias extends StatelessWidget {
   final List<Article> lista;
@@ -25,8 +26,14 @@ class ListaNoticias extends StatelessWidget {
             FadeInImage(
                 placeholder: AssetImage('assets/cargando.gif'),
                 image: NetworkImage(articulo.urlToImage)),
-          ListTile(title: Text(articulo.title,,),
-          subtitle:articulo.description==null?Text(''):Text(articulo.description),),
+          ListTile(
+            title: Text(
+              articulo.title,
+            ),
+            subtitle: articulo.description == null
+                ? Text('')
+                : Text(articulo.description),
+          ),
         ],
       ),
     );

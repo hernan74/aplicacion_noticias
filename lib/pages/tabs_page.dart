@@ -2,6 +2,9 @@ import 'package:aplicacion_noticias/pages/tap1_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../services/noticias_services.dart';
+import 'tap2_page.dart';
+
 class TabPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -19,17 +22,15 @@ class _Pagina extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final navegacionModel = Provider.of<NavegacionModel>(context);
+    final headLines = Provider.of<NoticiasServices>(context);
 
-    return PageView(
-      controller: navegacionModel.pageController,
-      physics: NeverScrollableScrollPhysics(),
-      children: [
-        Tap1Page(),
-        Container(
-          color: Colors.greenAccent,
-        )
-      ],
-    );
+    return headLines.headLines.length == 0
+        ? Center(child: CircularProgressIndicator())
+        : PageView(
+            controller: navegacionModel.pageController,
+            physics: NeverScrollableScrollPhysics(),
+            children: [Tap1Page(), Tab2Page()],
+          );
   }
 }
 
