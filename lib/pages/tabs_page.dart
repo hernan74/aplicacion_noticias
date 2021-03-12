@@ -22,16 +22,30 @@ class _Pagina extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final navegacionModel = Provider.of<NavegacionModel>(context);
-    final headLines = Provider.of<NoticiasServices>(context);
+    final service = Provider.of<NoticiasServices>(context);
 
-    return headLines.headLines.length == 0
-        ? Center(child: CircularProgressIndicator())
-        : PageView(
-            controller: navegacionModel.pageController,
-            physics: NeverScrollableScrollPhysics(),
-            children: [Tap1Page(), Tab2Page()],
-          );
+    return PageView(
+      controller: navegacionModel.pageController,
+      physics: NeverScrollableScrollPhysics(),
+      children: [
+        _CargarItemPagina(Tab1Page(), service.cargando),
+        _CargarItemPagina(Tab2Page(), service.cargando)
+      ],
+    );
   }
+}
+
+Widget _CargarItemPagina(Widget winget, bool estado) {
+  return Stack(children: [
+    estado
+        ? Container(
+            decoration: BoxDecoration(color: Colors.black.withOpacity(0.2)),
+            child: Center(
+              child: CircularProgressIndicator(),
+            ),
+          )
+        : winget,
+  ]);
 }
 
 class _Navegacion extends StatelessWidget {

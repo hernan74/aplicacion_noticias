@@ -6,15 +6,17 @@ import 'package:http/http.dart' as http;
 
 class NoticiasServices with ChangeNotifier {
   List<Article> headLines = [];
+  List<Article> noticiasPorCategoria = [];
+  bool cargando = true;
 
   List<Categoria> categoria = [
-    Categoria(FontAwesomeIcons.building, 'Negocio'),
-    Categoria(FontAwesomeIcons.tv, 'Entretenimiento'),
-    Categoria(FontAwesomeIcons.addressCard, 'General'),
-    Categoria(FontAwesomeIcons.headSideVirus, 'Vida'),
-    Categoria(FontAwesomeIcons.vials, 'Ciencia'),
-    Categoria(FontAwesomeIcons.volleyballBall, 'Deportes'),
-    Categoria(FontAwesomeIcons.memory, 'Tecnologia'),
+    Categoria(FontAwesomeIcons.building, 'business'),
+    Categoria(FontAwesomeIcons.tv, 'entertainment'),
+    Categoria(FontAwesomeIcons.addressCard, 'general'),
+    Categoria(FontAwesomeIcons.headSideVirus, 'health'),
+    Categoria(FontAwesomeIcons.vials, 'science'),
+    Categoria(FontAwesomeIcons.volleyballBall, 'sports'),
+    Categoria(FontAwesomeIcons.memory, 'technology'),
   ];
 
   final String _urlNewsApi = 'https://newsapi.org/v2';
@@ -28,13 +30,29 @@ class NoticiasServices with ChangeNotifier {
   getTopHeadLines() async {
     //  final url = Uri.https(Uri.decodeComponent(_urlNewsApi), _urlHeadLines,
     //    {'apiKey': _apiKey, 'country': _pais});
+    cargando = true;
+    notifyListeners();
     final url =
         Uri.parse('$_urlNewsApi$_urlHeadLines?country=$_pais&apiKey=$_apiKey');
     final respuesta = await http.get(url);
     final noticiasResponse = noticiasModelFromJson(respuesta.body);
 
     this.headLines.addAll(noticiasResponse.articles);
-    print(headLines);
+    cargando = false;
+    notifyListeners();
+  }
+
+  getNoticiasPorCategoria(String categoria) async {
+    cargando = true;
+    notifyListeners();
+    final url = Uri.parse(
+        '$_urlNewsApi$_urlHeadLines?country=$_pais&apiKey=$_apiKey&category=$categoria');
+    final respuesta = await http.get(url);
+    final noticiasResponse = noticiasModelFromJson(respuesta.body);
+    this.noticiasPorCategoria.clear();
+    this.noticiasPorCategoria.addAll(noticiasResponse.articles);
+    print(noticiasPorCategoria);
+    cargando = false;
     notifyListeners();
   }
 }

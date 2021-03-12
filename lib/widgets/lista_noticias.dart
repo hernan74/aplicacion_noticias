@@ -4,8 +4,9 @@ import 'package:aplicacion_noticias/model/noticias_models.dart';
 
 class ListaNoticias extends StatelessWidget {
   final List<Article> lista;
+  final bool cargando;
 
-  const ListaNoticias(this.lista);
+  const ListaNoticias(this.lista,this.cargando);
 
   @override
   Widget build(BuildContext context) {
